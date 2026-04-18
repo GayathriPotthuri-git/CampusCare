@@ -1,128 +1,102 @@
-// ─── Auth helpers ─────────────────────────────────────────────────────────────
-
 function getToken() { return localStorage.getItem('cc_token'); }
 function getUser()  { return JSON.parse(localStorage.getItem('cc_user') || 'null'); }
 
 function logout() {
-    localStorage.removeItem('cc_token');
-    localStorage.removeItem('cc_user');
-    window.location.href = 'login.html';
+  localStorage.removeItem('cc_token');
+  localStorage.removeItem('cc_user');
+  window.location.href = 'login.html';
 }
-
-// ─── On page load ─────────────────────────────────────────────────────────────
 
 window.addEventListener('DOMContentLoaded', () => {
-    if (!getToken()) {
-        window.location.href = 'login.html';
-        return;
-    }
+  if (!getToken()) { window.location.href = 'login.html'; return; }
 
-    const user = getUser();
+  const user = getUser();
+  const navLinks = document.getElementById('navLinks');
 
-    // Show welcome + logout in navbar
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks && user) {
-        const userInfo = document.createElement('span');
-        userInfo.style.cssText = 'color:#667eea; font-weight:600; font-size:14px;';
-        userInfo.textContent = `Hi, ${user.name.split(' ')[0]} (${user.role})`;
+  if (navLinks && user) {
+    const userInfo = document.createElement('span');
+    userInfo.style.cssText = 'color:#0ea5e9;font-weight:600;font-size:13px;';
+    userInfo.textContent = `Hi, ${user.name.split(' ')[0]} (${user.role})`;
 
-        const logoutBtn = document.createElement('a');
-        logoutBtn.href = '#';
-        logoutBtn.textContent = 'Logout';
-        logoutBtn.style.cssText = 'color:#e74c3c; font-weight:600;';
-        logoutBtn.onclick = logout;
+    const logoutBtn = document.createElement('a');
+    logoutBtn.href = '#';
+    logoutBtn.textContent = 'Logout';
+    logoutBtn.style.cssText = 'color:#ef4444;font-weight:600;';
+    logoutBtn.onclick = logout;
 
-        navLinks.appendChild(userInfo);
-        navLinks.appendChild(logoutBtn);
-    }
+    navLinks.appendChild(userInfo);
+    navLinks.appendChild(logoutBtn);
+  }
 
-    // Show admin-only note if student lands here
-    if (user && user.role !== 'admin') {
-        const header = document.querySelector('header p');
-        if (header) header.textContent = 'Showing your submitted complaints';
-    }
+  if (user && user.role !== 'admin') {
+    const sub = document.getElementById('dashSubtitle');
+    if (sub) sub.textContent = 'Your submitted complaints';
+  }
 
-    loadComplaints();
-    setInterval(loadComplaints, 10000);
+  loadComplaints();
+  setInterval(loadComplaints, 10000);
 });
 
-// ─── Load complaints ──────────────────────────────────────────────────────────
-
 async function loadComplaints() {
-    try {
-        const response = await fetch('http://localhost:3000/api/complaints', {
-            headers: { 'Authorization': 'Bearer ' + getToken() }
-        });
+  try {
+    const res = await fetch('http://localhost:3000/api/complaints', {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    });
 
-        if (response.status === 401) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const complaints = await response.json();
-        const user = getUser();
-
-        // Update stats
-        document.getElementById('totalCount').textContent = complaints.length;
-        document.getElementById('pendingCount').textContent =
-            complaints.filter(c => c.status === 'pending').length;
-        document.getElementById('resolvedCount').textContent =
-            complaints.filter(c => c.status === 'resolved').length;
-
-        // Display complaints
-        const container = document.getElementById('complaintsContainer');
-        container.innerHTML = '';
-
-        if (complaints.length === 0) {
-            container.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">No complaints yet.</p>';
-            return;
-        }
-
-        [...complaints].reverse().forEach(complaint => {
-            const card = document.createElement('div');
-            card.className = 'complaint-card';
-            card.innerHTML = `
-                <div class="complaint-header">
-                    <span class="complaint-category">${complaint.category.toUpperCase()}</span>
-                    <span class="complaint-status status-${complaint.status}">${complaint.status.toUpperCase()}</span>
-                </div>
-                <div class="complaint-info"><strong>Location:</strong> ${complaint.location}</div>
-                <div class="complaint-info"><strong>Description:</strong> ${complaint.description}</div>
-                <div class="complaint-info"><strong>Reporter:</strong> ${complaint.reporterName} (${complaint.reporterEmail})</div>
-                <div class="complaint-info"><strong>Assigned to:</strong> ${complaint.assignedTo.head} — ${complaint.assignedTo.department}</div>
-                <div class="complaint-info"><strong>Contact:</strong> ${complaint.assignedTo.contact} | ${complaint.assignedTo.email}</div>
-                <div class="complaint-info"><strong>Submitted:</strong> ${new Date(complaint.timestamp).toLocaleString()}</div>
-                ${complaint.updatedAt ? `<div class="complaint-info"><strong>Last updated:</strong> ${new Date(complaint.updatedAt).toLocaleString()}</div>` : ''}
-                ${user && user.role === 'admin' && complaint.status !== 'resolved' ? `
-                    <div class="complaint-actions">
-                        ${complaint.status === 'pending' ? `<button class="btn-resolve" style="margin-right:8px" onclick="updateStatus(${complaint.id}, 'in-progress')">Mark In Progress</button>` : ''}
-                        <button class="btn-resolve" onclick="updateStatus(${complaint.id}, 'resolved')">Mark Resolved</button>
-                    </div>
-                ` : ''}
-            `;
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error('Error loading complaints:', error);
+    if (res.status === 401) {
+      localStorage.removeItem('cc_token');
+      localStorage.removeItem('cc_user');
+      window.location.href = 'login.html';
+      return;
     }
+
+    const complaints = await res.json();
+    const user = getUser();
+
+    document.getElementById('totalCount').textContent = complaints.length;
+    document.getElementById('pendingCount').textContent = complaints.filter(c => c.status === 'pending').length;
+    document.getElementById('inProgressCount').textContent = complaints.filter(c => c.status === 'in-progress').length;
+    document.getElementById('resolvedCount').textContent = complaints.filter(c => c.status === 'resolved').length;
+
+    const container = document.getElementById('complaintsContainer');
+
+    if (complaints.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:#64748b;padding:40px;font-size:15px;">No complaints yet.</p>';
+      return;
+    }
+
+    container.innerHTML = [...complaints].reverse().map(c => `
+      <div class="complaint-card">
+        <div class="complaint-header">
+          <span class="complaint-category">${c.category}</span>
+          <span class="complaint-status status-${c.status}">${c.status.replace('-',' ')}</span>
+        </div>
+        <div class="complaint-info"><strong>Location:</strong> ${c.location}</div>
+        <div class="complaint-info"><strong>Issue:</strong> ${c.description}</div>
+        <div class="complaint-info"><strong>Reporter:</strong> ${c.reporterName} · ${c.reporterEmail}</div>
+        <div class="complaint-info"><strong>Assigned to:</strong> ${c.assignedTo.head} — ${c.assignedTo.department}</div>
+        <div class="complaint-info"><strong>Submitted:</strong> ${new Date(c.timestamp).toLocaleString()}</div>
+        ${c.updatedAt ? `<div class="complaint-info"><strong>Updated:</strong> ${new Date(c.updatedAt).toLocaleString()}</div>` : ''}
+        ${user && user.role === 'admin' && c.status !== 'resolved' ? `
+          <div class="complaint-actions">
+            ${c.status === 'pending' ? `<button class="btn-resolve" onclick="updateStatus(${c.id},'in-progress')">Mark In Progress</button>` : ''}
+            <button class="btn-resolve" onclick="updateStatus(${c.id},'resolved')">Mark Resolved</button>
+          </div>` : ''}
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('Error loading complaints:', err);
+  }
 }
 
-// ─── Update status ────────────────────────────────────────────────────────────
-
 async function updateStatus(id, status) {
-    try {
-        const response = await fetch(`http://localhost:3000/api/complaints/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + getToken()
-            },
-            body: JSON.stringify({ status })
-        });
-
-        if (response.status === 401) { window.location.href = 'login.html'; return; }
-        if (response.ok) loadComplaints();
-    } catch (error) {
-        console.error('Error updating complaint:', error);
-    }
+  try {
+    const res = await fetch(`http://localhost:3000/api/complaints/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ status })
+    });
+    if (res.status === 401) { window.location.href = 'login.html'; return; }
+    if (res.ok) loadComplaints();
+  } catch (err) { console.error(err); }
 }

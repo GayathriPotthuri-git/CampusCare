@@ -1,49 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Campus Care</title>
-    <link rel="stylesheet" href="landing.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — CampusCare</title>
+  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">🏛️ Campus Care</div>
-            <div class="nav-links">
-                <a href="landing.html">Home</a>
-                <a href="announcements.html">Announcements</a>
-                <a href="authorities.html">Authorities</a>
-                <a href="index.html">Report Issue</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container" style="margin-top: 100px;">
-        <header>
-            <h1>📊 Complaints Dashboard</h1>
-            <p>View and manage all submitted complaints</p>
-        </header>
-
-        <div class="stats">
-            <div class="stat-card">
-                <h3 id="totalCount">0</h3>
-                <p>Total Complaints</p>
-            </div>
-            <div class="stat-card">
-                <h3 id="pendingCount">0</h3>
-                <p>Pending</p>
-            </div>
-            <div class="stat-card">
-                <h3 id="resolvedCount">0</h3>
-                <p>Resolved</p>
-            </div>
-        </div>
-
-        <div id="complaintsContainer"></div>
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">⚡ CampusCare</div>
+    <div class="nav-links" id="navLinks">
+      <a href="landing.html">Home</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="authorities.html">Authorities</a>
+      <a href="index.html">Report Issue</a>
     </div>
+  </div>
+</nav>
 
-    <script src="dashboard.js"></script>
+<div class="container" style="margin-top:90px;">
+  <header>
+    <h1>📊 Dashboard</h1>
+    <p id="dashSubtitle">View and manage all submitted complaints</p>
+  </header>
+  <div class="stats">
+    <div class="stat-card"><h3 id="totalCount">0</h3><p>Total</p></div>
+    <div class="stat-card"><h3 id="pendingCount">0</h3><p>Pending</p></div>
+    <div class="stat-card"><h3 id="inProgressCount">0</h3><p>In Progress</p></div>
+    <div class="stat-card"><h3 id="resolvedCount">0</h3><p>Resolved</p></div>
+  </div>
+  <div id="complaintsContainer"></div>
+</div>
+
+<script src="dashboard.js"></script>
 </body>
 </html>

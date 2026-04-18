@@ -1,376 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Campus Care</title>
-    <link rel="stylesheet" href="landing.css">
-    <style>
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .auth-card {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-            padding: 48px;
-            width: 100%;
-            max-width: 440px;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auth-logo {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-
-        .auth-tagline {
-            text-align: center;
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 32px;
-        }
-
-        .tab-switcher {
-            display: flex;
-            background: #f5f5f5;
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 28px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: transparent;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #999;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #444;
-            margin-bottom: 6px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: #667eea;
-        }
-
-        .btn-auth {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: all 0.3s;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-auth:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-auth:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 18px;
-            display: none;
-        }
-
-        .alert.error {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-            display: block;
-        }
-
-        .alert.success {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #bbf7d0;
-            display: block;
-        }
-
-        .role-hint {
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 6px;
-        }
-
-        .back-home {
-            text-align: center;
-            margin-top: 24px;
-        }
-
-        .back-home a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .back-home a:hover {
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — CampusCare</title>
+  <link rel="stylesheet" href="landing.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; font-family: 'Inter', sans-serif;
+    }
+    .auth-wrap { width: 100%; max-width: 420px; }
+    .auth-card {
+      background: white; border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+      padding: 40px; animation: fadeInUp 0.4s ease;
+    }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .auth-logo { text-align: center; font-size: 24px; font-weight: 800; background: linear-gradient(135deg,#0ea5e9,#10b981); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom: 4px; }
+    .auth-tagline { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 28px; }
+    .tab-switcher { display: flex; background: #f1f5f9; border-radius: 10px; padding: 4px; margin-bottom: 24px; }
+    .tab-btn { flex: 1; padding: 9px; border: none; background: transparent; border-radius: 8px; font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
+    .tab-btn.active { background: white; color: #0ea5e9; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input { width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Inter',sans-serif; font-size: 14px; outline: none; transition: all 0.2s; background: #f8fafc; }
+    .form-group input:focus { border-color: #0ea5e9; background: white; box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+    .btn-auth { width: 100%; padding: 13px; background: linear-gradient(135deg,#0ea5e9,#10b981); color: white; border: none; border-radius: 10px; font-family: 'Inter',sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 4px; box-shadow: 0 8px 20px rgba(14,165,233,0.3); }
+    .btn-auth:hover { transform: translateY(-2px); }
+    .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .divider { text-align: center; margin: 16px 0; color: #cbd5e1; font-size: 13px; position: relative; }
+    .divider::before,.divider::after { content:''; position:absolute; top:50%; width:42%; height:1px; background:#e2e8f0; }
+    .divider::before { left: 0; } .divider::after { right: 0; }
+    .btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: white; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 600; color: #334155; text-decoration: none; transition: all 0.2s; }
+    .btn-google:hover { border-color: #0ea5e9; color: #0ea5e9; }
+    .alert { padding: 11px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .alert.error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; display: block; }
+    .alert.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; display: block; }
+    .role-hint { font-size: 11px; color: #94a3b8; margin-top: 5px; }
+    .back-home { text-align: center; margin-top: 20px; }
+    .back-home a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .back-home a:hover { color: white; }
+  </style>
 </head>
 <body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">⚡ CampusCare</div>
+    <div class="auth-tagline">Campus Issue Reporting System · MLRIT</div>
 
-    <div>
-        <div class="auth-card">
-            <div class="auth-logo">🏛️ Campus Care</div>
-            <div class="auth-tagline">Campus Issue Reporting System</div>
-
-            <div class="tab-switcher">
-                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
-                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
-            </div>
-
-            <!-- LOGIN FORM -->
-            <div class="auth-form active" id="loginForm">
-                <div class="alert" id="loginAlert"></div>
-
-                <div class="form-group">
-                    <label>College Email</label>
-                    <input type="email" id="loginEmail" placeholder="e.g. 21cs001@college.edu" />
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password" />
-                </div>
-
-                <button class="btn-auth" onclick="handleLogin()">Login</button>
-                <div style="text-align:center;margin:16px 0;color:#ccc;font-size:13px">or</div>
-                <a href="/auth/google" style="display:block;width:100%;padding:12px;background:white;border:2px solid #eee;border-radius:12px;text-align:center;font-family:Poppins,sans-serif;font-size:14px;font-weight:600;color:#333;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='#667eea'" onmouseout="this.style.borderColor='#eee'">
-                    <img src="https://www.google.com/favicon.ico" width="16" style="vertical-align:middle;margin-right:8px">
-                    Continue with Google
-                </a>
-            </div>
-
-            <!-- SIGNUP FORM -->
-            <div class="auth-form" id="signupForm">
-                <div class="alert" id="signupAlert"></div>
-
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="signupName" placeholder="Your full name" />
-                </div>
-
-                <div class="form-group">
-                    <label>College Email</label>
-                    <input type="email" id="signupEmail" placeholder="e.g. 21cs001@college.edu" />
-                    <div class="role-hint">
-                        Starts with numbers? → Student &nbsp;|&nbsp; Starts with dr./prof.? → Faculty
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="Minimum 6 characters" />
-                </div>
-
-                <button class="btn-auth" onclick="handleSignup()">Create Account</button>
-            </div>
-        </div>
-
-        <div class="back-home">
-            <a href="landing.html">← Back to Home</a>
-        </div>
+    <div class="tab-switcher">
+      <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
     </div>
 
-    <script>
-        // Verify token with server before redirecting to avoid redirect loops
-        async function checkExistingSession() {
-            const token = localStorage.getItem('cc_token');
-            const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
-            if (!token || !user) return;
+    <div class="auth-form active" id="loginForm">
+      <div class="alert" id="loginAlert"></div>
+      <div class="form-group">
+        <label>College Email</label>
+        <input type="email" id="loginEmail" placeholder="e.g. 21cs001@mlrit.ac.in">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password">
+      </div>
+      <button class="btn-auth" onclick="handleLogin()">Login</button>
+      <div class="divider">or</div>
+      <a href="/auth/google" class="btn-google">
+        <img src="https://www.google.com/favicon.ico" width="16">
+        Continue with Google
+      </a>
+    </div>
 
-            try {
-                const res = await fetch('http://localhost:3000/api/auth/me', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                if (res.ok) {
-                    window.location.href = user.role === 'admin' ? 'dashboard.html' : 'index.html';
-                } else {
-                    localStorage.removeItem('cc_token');
-                    localStorage.removeItem('cc_user');
-                }
-            } catch (err) {
-                // Server not reachable, clear stale token and stay on login page
-                localStorage.removeItem('cc_token');
-                localStorage.removeItem('cc_user');
-            }
-        }
-        checkExistingSession();
+    <div class="auth-form" id="signupForm">
+      <div class="alert" id="signupAlert"></div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="signupName" placeholder="Your full name">
+      </div>
+      <div class="form-group">
+        <label>College Email</label>
+        <input type="email" id="signupEmail" placeholder="e.g. 21cs001@mlrit.ac.in">
+        <div class="role-hint">Starts with numbers → Student &nbsp;·&nbsp; dr./prof. → Faculty</div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="Minimum 6 characters">
+      </div>
+      <button class="btn-auth" onclick="handleSignup()">Create Account</button>
+    </div>
+  </div>
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'));
-            });
-            document.getElementById('loginForm').classList.toggle('active', tab === 'login');
-            document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
-        }
+  <div class="back-home">
+    <a href="landing.html">← Back to Home</a>
+  </div>
+</div>
 
-        function showAlert(formId, message, type) {
-            const el = document.getElementById(formId + 'Alert');
-            el.textContent = message;
-            el.className = 'alert ' + type;
-        }
+<script>
+  async function checkExistingSession() {
+    const token = localStorage.getItem('cc_token');
+    const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
+    if (!token || !user) return;
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.ok) { window.location.href = user.role === 'admin' ? 'dashboard.html' : 'index.html'; }
+      else { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); }
+    } catch { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); }
+  }
+  checkExistingSession();
 
-        async function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const btn = document.querySelector('#loginForm .btn-auth');
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+    document.getElementById('loginForm').classList.toggle('active', tab==='login');
+    document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  }
 
-            if (!email || !password) {
-                return showAlert('login', 'Please enter your email and password.', 'error');
-            }
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id+'Alert');
+    el.textContent = msg; el.className = 'alert ' + type;
+  }
 
-            btn.disabled = true;
-            btn.textContent = 'Logging in...';
+  async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.querySelector('#loginForm .btn-auth');
+    if (!email || !password) return showAlert('login','Please enter email and password.','error');
+    btn.disabled = true; btn.textContent = 'Logging in...';
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('cc_token', data.token);
+        localStorage.setItem('cc_user', JSON.stringify(data.user));
+        showAlert('login','Login successful! Redirecting...','success');
+        setTimeout(() => { window.location.href = data.user.role==='admin'?'dashboard.html':'index.html'; }, 700);
+      } else { showAlert('login', data.message, 'error'); btn.disabled=false; btn.textContent='Login'; }
+    } catch { showAlert('login','Cannot connect to server.','error'); btn.disabled=false; btn.textContent='Login'; }
+  }
 
-            try {
-                const res = await fetch('http://localhost:3000/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
+  async function handleSignup() {
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const btn = document.querySelector('#signupForm .btn-auth');
+    if (!name||!email||!password) return showAlert('signup','Please fill in all fields.','error');
+    btn.disabled=true; btn.textContent='Creating account...';
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('cc_token', data.token);
+        localStorage.setItem('cc_user', JSON.stringify(data.user));
+        showAlert('signup','Account created! Redirecting...','success');
+        setTimeout(() => { window.location.href = data.user.role==='admin'?'dashboard.html':'index.html'; }, 700);
+      } else { showAlert('signup', data.message, 'error'); btn.disabled=false; btn.textContent='Create Account'; }
+    } catch { showAlert('signup','Cannot connect to server.','error'); btn.disabled=false; btn.textContent='Create Account'; }
+  }
 
-                const data = await res.json();
-
-                if (data.success) {
-                    localStorage.setItem('cc_token', data.token);
-                    localStorage.setItem('cc_user', JSON.stringify(data.user));
-                    showAlert('login', 'Login successful! Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = data.user.role === 'admin' ? 'dashboard.html' : 'index.html';
-                    }, 800);
-                } else {
-                    showAlert('login', data.message, 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Login';
-                }
-            } catch (err) {
-                showAlert('login', 'Cannot connect to server. Is it running?', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Login';
-            }
-        }
-
-        async function handleSignup() {
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const btn = document.querySelector('#signupForm .btn-auth');
-
-            if (!name || !email || !password) {
-                return showAlert('signup', 'Please fill in all fields.', 'error');
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Creating account...';
-
-            try {
-                const res = await fetch('http://localhost:3000/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password })
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-                    localStorage.setItem('cc_token', data.token);
-                    localStorage.setItem('cc_user', JSON.stringify(data.user));
-                    showAlert('signup', 'Account created! Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = data.user.role === 'admin' ? 'dashboard.html' : 'index.html';
-                    }, 800);
-                } else {
-                    showAlert('signup', data.message, 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Create Account';
-                }
-            } catch (err) {
-                showAlert('signup', 'Cannot connect to server. Is it running?', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
-        }
-
-        // Allow pressing Enter to submit
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const loginActive = document.getElementById('loginForm').classList.contains('active');
-                if (loginActive) handleLogin();
-                else handleSignup();
-            }
-        });
-    </script>
+  document.addEventListener('keydown', e => {
+    if (e.key==='Enter') {
+      document.getElementById('loginForm').classList.contains('active') ? handleLogin() : handleSignup();
+    }
+  });
+</script>
 </body>
 </html>

@@ -1,107 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Issue Reporting System</title>
-    <link rel="stylesheet" href="landing.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusCare — Report. Track. Resolve.</title>
+  <link rel="stylesheet" href="landing.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">🏛️ Campus Care</div>
-            <div class="nav-links">
-                <a href="landing.html">Home</a>
-                <a href="announcements.html">Announcements</a>
-                <a href="authorities.html">Authorities</a>
-                <a href="index.html" class="btn-nav">Report Issue</a>
-            </div>
-        </div>
-    </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Your Voice Matters</h1>
-            <p class="hero-subtitle">Report campus issues instantly and get them resolved by the right authorities</p>
-            <div class="hero-buttons">
-                <a href="index.html" class="btn-primary">Report an Issue</a>
-                <a href="dashboard.html" class="btn-secondary">View Dashboard</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <a href="category.html?type=maintenance" class="floating-card card-1">
-                <span class="icon">🔧</span>
-                <p>Maintenance</p>
-            </a>
-            <a href="category.html?type=electrical" class="floating-card card-2">
-                <span class="icon">💡</span>
-                <p>Electrical</p>
-            </a>
-            <a href="category.html?type=network" class="floating-card card-3">
-                <span class="icon">💻</span>
-                <p>IT Support</p>
-            </a>
-        </div>
-    </section>
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">⚡ CampusCare</div>
+    <div class="nav-links" id="navLinks">
+      <a href="landing.html">Home</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="authorities.html">Authorities</a>
+      <a href="index.html" class="btn-nav">Report Issue</a>
+    </div>
+  </div>
+</nav>
 
-    <section class="features">
-        <h2 class="section-title">How It Works</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📝</div>
-                <h3>1. Report Issue</h3>
-                <p>Submit your complaint with details and location</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>2. Auto-Route</h3>
-                <p>System automatically assigns to the right department</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📞</div>
-                <h3>3. Get Notified</h3>
-                <p>Authorities receive instant notifications</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">✅</div>
-                <h3>4. Track Progress</h3>
-                <p>Monitor your complaint status in real-time</p>
-            </div>
-        </div>
-    </section>
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🎓 Built for MLRIT Campus</div>
+    <h1 class="hero-title">Campus issues,<br><span>solved faster.</span></h1>
+    <p class="hero-subtitle">Report any campus issue in seconds. It gets routed to the right authority automatically — no follow-up needed.</p>
+    <div class="hero-buttons">
+      <a href="index.html" class="btn-primary">Report an Issue</a>
+      <a href="announcements.html" class="btn-secondary">View Announcements</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <a href="category.html?type=electrical" class="floating-card card-1">
+      <span class="icon">⚡</span>
+      <p>Electrical</p>
+      <small>Instant routing</small>
+    </a>
+    <a href="category.html?type=network" class="floating-card card-2">
+      <span class="icon">💻</span>
+      <p>IT Support</p>
+      <small>Network & devices</small>
+    </a>
+    <a href="category.html?type=maintenance" class="floating-card card-3">
+      <span class="icon">🔧</span>
+      <p>Maintenance</p>
+      <small>Repairs & cleaning</small>
+    </a>
+  </div>
+</section>
 
-    <section class="stats-section">
-        <h2 class="section-title">Live Statistics</h2>
-        <div class="stats-grid" id="liveStats">
-            <div class="stat-box">
-                <div class="stat-number" id="totalIssues">0</div>
-                <div class="stat-label">Total Issues Reported</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number" id="resolvedIssues">0</div>
-                <div class="stat-label">Issues Resolved</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number" id="activeIssues">0</div>
-                <div class="stat-label">Active Issues</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">6</div>
-                <div class="stat-label">Departments</div>
-            </div>
-        </div>
-    </section>
+<section class="features">
+  <div class="section-header">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-title">From report to resolved in 4 steps</h2>
+    <p class="section-sub">No more chasing authorities or waiting in queues</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-num">1</div>
+      <h3>Submit your issue</h3>
+      <p>Describe the problem, pick a category and location. Takes under a minute.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">2</div>
+      <h3>Auto-routed instantly</h3>
+      <p>The system detects the right department and assigns it automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">3</div>
+      <h3>Authority notified</h3>
+      <p>The department head gets an email alert with full details immediately.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">4</div>
+      <h3>Track and get resolved</h3>
+      <p>Monitor status from your dashboard. Get notified when it's done.</p>
+    </div>
+  </div>
+</section>
 
-    <section class="cta-section">
-        <h2>Ready to Make a Difference?</h2>
-        <p>Report issues and help us maintain a better campus environment</p>
-        <a href="index.html" class="btn-cta">Get Started Now</a>
-    </section>
+<section class="categories">
+  <div class="section-header">
+    <div class="section-tag">Categories</div>
+    <h2 class="section-title">What can you report?</h2>
+    <p class="section-sub">Every issue goes to the right team</p>
+  </div>
+  <div class="categories-grid">
+    <a href="category.html?type=plumbing" class="cat-card"><span class="cat-icon">🚰</span><div class="cat-name">Plumbing</div></a>
+    <a href="category.html?type=electrical" class="cat-card"><span class="cat-icon">⚡</span><div class="cat-name">Electrical</div></a>
+    <a href="category.html?type=water" class="cat-card"><span class="cat-icon">💧</span><div class="cat-name">Water Supply</div></a>
+    <a href="category.html?type=network" class="cat-card"><span class="cat-icon">📡</span><div class="cat-name">Network / IT</div></a>
+    <a href="category.html?type=maintenance" class="cat-card"><span class="cat-icon">🔧</span><div class="cat-name">Maintenance</div></a>
+    <a href="category.html?type=other" class="cat-card"><span class="cat-icon">📋</span><div class="cat-name">Other</div></a>
+  </div>
+</section>
 
-    <footer>
-        <p>&copy; 2024 Campus Care System. Making campus life better, one issue at a time.</p>
-    </footer>
+<section class="cta-section">
+  <h2>Ready to report an issue?</h2>
+  <p>Login and submit your complaint in under a minute</p>
+  <a href="login.html" class="btn-cta">Get Started</a>
+</section>
 
-    <script src="landing.js"></script>
+<footer>
+  <p>© 2025 CampusCare · MLRIT · Built to make campus life better</p>
+</footer>
+
+<script src="landing.js"></script>
 </body>
 </html>
