@@ -11,15 +11,15 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '24r21a05kz@mlrit.ac.in',
-    pass: 'ifreznakkwafszkj'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
 async function sendEmail(to, subject, body) {
   try {
     await transporter.sendMail({
-      from: '"CampusCare" <24r21a05kz@mlrit.ac.in>',
+      from: `"CampusCare" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html: body
