@@ -223,6 +223,55 @@ function initAdminAccount() {
   }
 }
 
+// ─── Google OAuth setup ───────────────────────────────────────────────────────
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const passport = require('passport');
+const session = require('express-session');
+
+app.use(session({ secret: 'campuscare_secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: '/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) => {
+  const users = readJSON(usersFile);
+  let user = users.find(u => u.googleId === profile.id || u.email === profile.emails[0].value);
+  if (!user) {
+    user = {
+      id: Date.now(),
+      googleId: profile.id,
+      name: profile.displayName,
+      email: profile.emails[0].value,
+      password: null,
+      role: detectRole(profile.emails[0].value),
+      createdAt: new Date().toISOString()
+    };
+    users.push(user);
+    writeJSON(usersFile, users);
+  }
+  return done(null, user);
+}));
+
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser((id, done) => {
+  const users = readJSON(usersFile);
+  done(null, users.find(u => u.id === id) || false);
+});
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login.html' }),
+  (req, res) => {
+    const token = generateToken(req.user.id);
+    const user = { id: req.user.id, name: req.user.name, email: req.user.email, role: req.user.role };
+    res.redirect(`/auth-success.html?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
+  }
+);
+
 // ─── AUTH ROUTES ──────────────────────────────────────────────────────────────
 
 // Signup

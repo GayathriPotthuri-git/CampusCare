@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signing in - Campus Care</title>
+    <link rel="stylesheet" href="landing.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>Signing you in...</div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const user = JSON.parse(decodeURIComponent(params.get('user') || '{}'));
+
+        if (token && user) {
+            localStorage.setItem('cc_token', token);
+            localStorage.setItem('cc_user', JSON.stringify(user));
+            window.location.href = user.role === 'admin' ? 'dashboard.html' : 'index.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
