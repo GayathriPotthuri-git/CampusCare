@@ -1,0 +1,18 @@
+# Environment variables - never upload to GitHub
+.env
+
+# Dependencies - too large to upload, npm install recreates them
+node_modules/
+
+# Data files - contain real user data
+users.json
+complaints.json
+announcements.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements - Campus Care</title>
+    <link rel="stylesheet" href="landing.css">
+    <style>
+        body { background: #f5f7fa; }
+
+        .page-header {
+            padding: 120px 40px 50px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .page-header h1 { font-size: 42px; margin-bottom: 10px; }
+        .page-header p  { font-size: 18px; opacity: 0.9; }
+
+        .announcements-wrapper {
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        /* Filter tabs */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: white;
+            color: #667eea;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Admin post form */
+        .post-form {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: none;
+        }
+
+        .post-form h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .post-form input,
+        .post-form textarea,
+        .post-form select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .post-form input:focus,
+        .post-form textarea:focus,
+        .post-form select:focus { border-color: #667eea; }
+
+        .post-form textarea { resize: vertical; min-height: 100px; }
+
+        .btn-post {
+            padding: 11px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-post:hover { transform: translateY(-2px); }
+
+        .post-alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .post-alert.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; display: block; }
+        .post-alert.error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; display: block; }
+
+        /* Announcement cards */
+        .announcement-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border-left: 5px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ann-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .tag-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .tag-General  { background: #e0e7ff; color: #3730a3; }
+        .tag-Hostel   { background: #fef3c7; color: #92400e; }
+        .tag-Sports   { background: #dcfce7; color: #166534; }
+        .tag-Academic { background: #ede9fe; color: #5b21b6; }
+        .tag-Club     { background: #fce7f3; color: #9d174d; }
+        .tag-Event    { background: #ffedd5; color: #9a3412; }
+
+        .ann-body {
+            color: #555;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        .ann-meta {
+            font-size: 12px;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-delete {
+            padding: 4px 12px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .btn-delete:hover { background: #fecaca; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        .loading { text-align: center; padding: 40px; color: #aaa; }
+
+        /* Tag border colors */
+        .border-General  { border-left-color: #6366f1; }
+        .border-Hostel   { border-left-color: #f59e0b; }
+        .border-Sports   { border-left-color: #22c55e; }
+        .border-Academic { border-left-color: #8b5cf6; }
+        .border-Club     { border-left-color: #ec4899; }
+        .border-Event    { border-left-color: #f97316; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">🏛️ Campus Care</div>
+        <div class="nav-links" id="navLinks">
+            <a href="landing.html">Home</a>
+            <a href="announcements.html">Announcements</a>
+            <a href="authorities.html">Authorities</a>
+            <a href="index.html" class="btn-nav">Report Issue</a>
+        </div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1>📢 Announcements</h1>
+    <p>Stay updated with the latest campus news and notices</p>
+</div>
+
+<div class="announcements-wrapper">
+
+    <!-- Admin post form (only visible to admin) -->
+    <div class="post-form" id="postForm">
+        <h3>Post New Announcement</h3>
+        <div class="post-alert" id="postAlert"></div>
+        <input type="text" id="annTitle" placeholder="Announcement title" />
+        <select id="annTag">
+            <option value="General">General</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Sports">Sports</option>
+            <option value="Academic">Academic</option>
+            <option value="Club">Club</option>
+            <option value="Event">Event</option>
+        </select>
+        <textarea id="annBody" placeholder="Write your announcement here..."></textarea>
+        <button class="btn-post" onclick="postAnnouncement()">Post Announcement</button>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterBy('All', this)">All</button>
+        <button class="filter-btn" onclick="filterBy('General', this)">General</button>
+        <button class="filter-btn" onclick="filterBy('Hostel', this)">Hostel</button>
+        <button class="filter-btn" onclick="filterBy('Sports', this)">Sports</button>
+        <button class="filter-btn" onclick="filterBy('Academic', this)">Academic</button>
+        <button class="filter-btn" onclick="filterBy('Club', this)">Club</button>
+        <button class="filter-btn" onclick="filterBy('Event', this)">Event</button>
+    </div>
+
+    <!-- Announcements list -->
+    <div id="announcementsList">
+        <div class="loading">Loading announcements...</div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2024 Campus Care System. Making campus life better, one issue at a time.</p>
+</footer>
+
+<script>
+    let allAnnouncements = [];
+    let currentFilter = 'All';
+
+    function getToken() { return localStorage.getItem('cc_token'); }
+    function getUser()  { return JSON.parse(localStorage.getItem('cc_user') || 'null'); }
+
+    function logout() {
+        localStorage.removeItem('cc_token');
+        localStorage.removeItem('cc_user');
+        window.location.href = 'login.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        updateNavbar();
+        loadAnnouncements();
+
+        // Show post form only to admin
+        const user = getUser();
+        if (user && user.role === 'admin') {
+            document.getElementById('postForm').style.display = 'block';
+        }
+    });
+
+    function updateNavbar() {
+        const user = getUser();
+        const navLinks = document.getElementById('navLinks');
+
+        if (user) {
+            const userInfo = document.createElement('span');
+            userInfo.style.cssText = 'color:#667eea; font-weight:600; font-size:14px;';
+            userInfo.textContent = `Hi, ${user.name.split(' ')[0]}`;
+
+            const logoutBtn = document.createElement('a');
+            logoutBtn.href = '#';
+            logoutBtn.textContent = 'Logout';
+            logoutBtn.style.cssText = 'color:#e74c3c; font-weight:600;';
+            logoutBtn.onclick = logout;
+
+            navLinks.appendChild(userInfo);
+            navLinks.appendChild(logoutBtn);
+        } else {
+            const loginBtn = document.createElement('a');
+            loginBtn.href = 'login.html';
+            loginBtn.className = 'btn-nav';
+            loginBtn.textContent = 'Login';
+            const reportBtn = navLinks.querySelector('.btn-nav');
+            if (reportBtn) reportBtn.replaceWith(loginBtn);
+        }
+    }
+
+    async function loadAnnouncements() {
+        try {
+            const res = await fetch('http://localhost:3000/api/announcements');
+            allAnnouncements = await res.json();
+            renderAnnouncements();
+        } catch (err) {
+            document.getElementById('announcementsList').innerHTML =
+                '<div class="empty-state">Could not load announcements. Is the server running?</div>';
+        }
+    }
+
+    function filterBy(tag, btn) {
+        currentFilter = tag;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderAnnouncements();
+    }
+
+    function renderAnnouncements() {
+        const user = getUser();
+        const list = document.getElementById('announcementsList');
+        const filtered = currentFilter === 'All'
+            ? allAnnouncements
+            : allAnnouncements.filter(a => a.tag === currentFilter);
+
+        if (filtered.length === 0) {
+            list.innerHTML = '<div class="empty-state">No announcements yet in this category.</div>';
+            return;
+        }
+
+        list.innerHTML = filtered.map(ann => `
+            <div class="announcement-card border-${ann.tag}">
+                <div class="card-top">
+                    <div class="ann-title">${ann.title}</div>
+                    <span class="tag-badge tag-${ann.tag}">${ann.tag}</span>
+                </div>
+                <div class="ann-body">${ann.body}</div>
+                <div class="ann-meta">
+                    <span>Posted by ${ann.postedBy} &nbsp;·&nbsp; ${new Date(ann.timestamp).toLocaleString()}</span>
+                    ${user && user.role === 'admin' ? `<button class="btn-delete" onclick="deleteAnnouncement(${ann.id})">Delete</button>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function postAnnouncement() {
+        const title = document.getElementById('annTitle').value.trim();
+        const body  = document.getElementById('annBody').value.trim();
+        const tag   = document.getElementById('annTag').value;
+        const alert = document.getElementById('postAlert');
+
+        if (!title || !body) {
+            alert.textContent = 'Please fill in both title and announcement body.';
+            alert.className = 'post-alert error';
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/api/announcements', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + getToken()
+                },
+                body: JSON.stringify({ title, body, tag })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                alert.textContent = 'Announcement posted successfully!';
+                alert.className = 'post-alert success';
+                document.getElementById('annTitle').value = '';
+                document.getElementById('annBody').value = '';
+                loadAnnouncements();
+                setTimeout(() => { alert.style.display = 'none'; }, 3000);
+            } else {
+                alert.textContent = data.message;
+                alert.className = 'post-alert error';
+            }
+        } catch (err) {
+            alert.textContent = 'Could not connect to server.';
+            alert.className = 'post-alert error';
+        }
+    }
+
+    async function deleteAnnouncement(id) {
+        if (!confirm('Delete this announcement?')) return;
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/announcements/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            });
+
+            if (res.ok) loadAnnouncements();
+        } catch (err) {
+            console.error('Delete failed:', err);
+        }
+    }
+</script>
+
+</body>
+</html>

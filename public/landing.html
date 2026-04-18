@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Issue Reporting System</title>
+    <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🏛️ Campus Care</div>
+            <div class="nav-links">
+                <a href="landing.html">Home</a>
+                <a href="announcements.html">Announcements</a>
+                <a href="authorities.html">Authorities</a>
+                <a href="index.html" class="btn-nav">Report Issue</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Your Voice Matters</h1>
+            <p class="hero-subtitle">Report campus issues instantly and get them resolved by the right authorities</p>
+            <div class="hero-buttons">
+                <a href="index.html" class="btn-primary">Report an Issue</a>
+                <a href="dashboard.html" class="btn-secondary">View Dashboard</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <a href="category.html?type=maintenance" class="floating-card card-1">
+                <span class="icon">🔧</span>
+                <p>Maintenance</p>
+            </a>
+            <a href="category.html?type=electrical" class="floating-card card-2">
+                <span class="icon">💡</span>
+                <p>Electrical</p>
+            </a>
+            <a href="category.html?type=network" class="floating-card card-3">
+                <span class="icon">💻</span>
+                <p>IT Support</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>1. Report Issue</h3>
+                <p>Submit your complaint with details and location</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>2. Auto-Route</h3>
+                <p>System automatically assigns to the right department</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📞</div>
+                <h3>3. Get Notified</h3>
+                <p>Authorities receive instant notifications</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>4. Track Progress</h3>
+                <p>Monitor your complaint status in real-time</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <h2 class="section-title">Live Statistics</h2>
+        <div class="stats-grid" id="liveStats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalIssues">0</div>
+                <div class="stat-label">Total Issues Reported</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="resolvedIssues">0</div>
+                <div class="stat-label">Issues Resolved</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="activeIssues">0</div>
+                <div class="stat-label">Active Issues</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Departments</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Report issues and help us maintain a better campus environment</p>
+        <a href="index.html" class="btn-cta">Get Started Now</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Campus Care System. Making campus life better, one issue at a time.</p>
+    </footer>
+
+    <script src="landing.js"></script>
+</body>
+</html>
