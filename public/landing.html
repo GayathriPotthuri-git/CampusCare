@@ -3,108 +3,422 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusCare — Report. Track. Resolve.</title>
-  <link rel="stylesheet" href="landing.css">
+  <title>CampusCare — MLRIT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #0ea5e9;
+      --green: #10b981;
+      --dark: #0f172a;
+      --dark2: #1e293b;
+      --gray: #64748b;
+      --light: #f0f9ff;
+      --border: #e2e8f0;
+      --grad: linear-gradient(135deg, #0ea5e9, #10b981);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(14,165,233,0.1);
+    }
+    .nav-logo {
+      font-size: 19px; font-weight: 800; letter-spacing: -0.5px;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray); font-size: 14px; font-weight: 500;
+      padding: 7px 14px; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); background: #e0f2fe; }
+    .nav-cta {
+      background: var(--grad) !important;
+      color: white !important; font-weight: 600 !important;
+      border-radius: 8px !important; padding: 8px 20px !important;
+    }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); background: var(--grad) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 60px;
+      padding: 120px 60px 80px;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .hero-left { }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #e0f2fe, #dcfce7);
+      border: 1px solid rgba(14,165,233,0.2);
+      padding: 6px 16px; border-radius: 30px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+    .hero-title {
+      font-size: 58px; font-weight: 900; line-height: 1.05;
+      letter-spacing: -2px; color: var(--dark); margin-bottom: 22px;
+    }
+    .hero-title .grad {
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-title .outline {
+      -webkit-text-stroke: 2px #0ea5e9;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 17px; color: var(--gray); line-height: 1.75;
+      max-width: 460px; margin-bottom: 36px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-main {
+      padding: 14px 32px; background: var(--grad);
+      color: white; border-radius: 12px; font-weight: 700; font-size: 15px;
+      text-decoration: none; transition: all 0.25s;
+      box-shadow: 0 8px 28px rgba(14,165,233,0.35);
+    }
+    .btn-main:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(14,165,233,0.45); }
+    .btn-ghost {
+      padding: 14px 28px; background: transparent;
+      color: var(--dark); border-radius: 12px; font-weight: 600; font-size: 15px;
+      text-decoration: none; transition: all 0.2s; border: 2px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .btn-ghost svg { transition: transform 0.2s; }
+    .btn-ghost:hover svg { transform: translateX(4px); }
+    
+    .fcat {
+      position: absolute;
+      background: white;
+      border-radius: 18px;
+      padding: 20px 24px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.09);
+      text-decoration: none;
+      color: #0f172a;
+      width: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: floatCard 4s ease-in-out infinite;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      cursor: pointer;
+    }
+    .fcat:hover {
+      transform: translateY(-12px) scale(1.06) !important;
+      box-shadow: 0 28px 60px rgba(14,165,233,0.2);
+      border-color: #0ea5e9;
+    }
+    .fcat-icon { font-size: 34px; margin-bottom: 10px; }
+    .fcat-name { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .fcat-sub  { font-size: 11px; color: #94a3b8; }
+
+    .hero-trust {
+      margin-top: 40px; display: flex; align-items: center; gap: 12px;
+    }
+    .trust-avatars { display: flex; }
+    .trust-avatars span {
+      width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;
+      background: var(--grad); margin-left: -8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: white; font-weight: 600;
+    }
+    .trust-avatars span:first-child { margin-left: 0; }
+    .trust-text { font-size: 13px; color: var(--gray); }
+    .trust-text strong { color: var(--dark); }
+
+    /* ── HERO RIGHT — CARDS ── */
+    .hero-right {
+      position: relative; height: 520px;
+    }
+
+    .issue-card {
+      position: absolute; background: white;
+      border-radius: 20px; padding: 22px 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      border: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer; display: block;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+    .issue-card:hover { transform: translateY(-12px) scale(1.03) !important; box-shadow: 0 32px 80px rgba(0,0,0,0.15); }
+
+    .card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .card-sub   { font-size: 12px; color: var(--gray); margin-top: 1px; }
+    .card-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+    }
+    .badge-pending  { background: #fef3c7; color: #d97706; }
+    .badge-routed   { background: #dcfce7; color: #16a34a; }
+    .badge-resolved { background: #e0f2fe; color: #0369a1; }
+    .card-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green  { background: #10b981; }
+    .dot-blue   { background: #0ea5e9; }
+
+    /* Card positions */
+    .card-1 { top: 30px;  left: 10px;  width: 280px; animation-delay: 0s; }
+    .card-2 { top: 160px; right: 0px;  width: 260px; animation-delay: 1.4s; }
+    .card-3 { bottom: 80px; left: 30px; width: 270px; animation-delay: 2.8s; }
+
+    /* Decorative blobs */
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(60px); opacity: 0.12; pointer-events: none;
+    }
+    .blob-1 { width: 300px; height: 300px; background: #0ea5e9; top: -60px; right: -60px; }
+    .blob-2 { width: 250px; height: 250px; background: #10b981; bottom: 0; left: -40px; }
+
+    @keyframes floatCard {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-14px); }
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 100px 60px;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-block; background: var(--grad);
+      color: white; padding: 4px 16px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 40px; font-weight: 800; letter-spacing: -1px;
+      color: var(--dark); margin-bottom: 12px;
+    }
+    .section-sub { font-size: 16px; color: var(--gray); margin-bottom: 60px; }
+
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .step {
+      background: white; padding: 32px 26px; border-radius: 20px;
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: all 0.3s;
+    }
+    .step::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad); transform: scaleX(0); transition: transform 0.3s;
+    }
+    .step:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
+    .step:hover::after { transform: scaleX(1); }
+    .step-num {
+      font-size: 48px; font-weight: 900; letter-spacing: -2px;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 16px; line-height: 1;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+    .step p  { font-size: 13px; color: var(--gray); line-height: 1.65; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: #475569;
+      text-align: center; padding: 32px 60px; font-size: 13px;
+    }
+    footer span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+      .hero-right { height: 380px; }
+      .hero-title { font-size: 40px; }
+      nav { padding: 16px 24px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .how { padding: 60px 24px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="logo">⚡ CampusCare</div>
-    <div class="nav-links" id="navLinks">
-      <a href="landing.html">Home</a>
-      <a href="announcements.html">Announcements</a>
-      <a href="authorities.html">Authorities</a>
-      <a href="index.html" class="btn-nav">Report Issue</a>
-    </div>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ CampusCare</div>
+  <div class="nav-links" id="navLinks">
+    <a href="landing.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="authorities.html">Authorities</a>
+    <a href="index.html" class="nav-cta">Report Issue</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">🎓 Built for MLRIT Campus</div>
-    <h1 class="hero-title">Campus issues,<br><span>solved faster.</span></h1>
-    <p class="hero-subtitle">Report any campus issue in seconds. It gets routed to the right authority automatically — no follow-up needed.</p>
-    <div class="hero-buttons">
-      <a href="index.html" class="btn-primary">Report an Issue</a>
-      <a href="announcements.html" class="btn-secondary">View Announcements</a>
+  <div class="hero-left">
+    <div class="hero-eyebrow">MLRIT Campus · Live System</div>
+    <h1 class="hero-title">
+      Campus issues,<br>
+      <span class="grad">fixed faster.</span>
+    </h1>
+    <p class="hero-desc">
+      Submit any campus issue in seconds. Our system instantly routes it to the right department — no follow-up, no waiting, no confusion.
+    </p>
+    <div class="hero-actions">
+      <a href="login.html" class="btn-main">Get Started Free</a>
+      <a href="#how" class="btn-ghost">
+        See How it Works
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-avatars">
+        <span>S</span><span>F</span><span>A</span><span>+</span>
+      </div>
+      <div class="trust-text">Used by <strong>students, faculty & staff</strong> across MLRIT</div>
     </div>
   </div>
-  <div class="hero-image">
-    <a href="category.html?type=electrical" class="floating-card card-1">
-      <span class="icon">⚡</span>
-      <p>Electrical</p>
-      <small>Instant routing</small>
+
+  <div class="hero-right" style="position:relative;height:520px;">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <a href="category.html?type=electrical" class="fcat" style="top:20px;left:0;animation-delay:0s;">
+      <div class="fcat-icon">⚡</div>
+      <div class="fcat-name">Electrical</div>
+      <div class="fcat-sub">Lights · Power · AC</div>
     </a>
-    <a href="category.html?type=network" class="floating-card card-2">
-      <span class="icon">💻</span>
-      <p>IT Support</p>
-      <small>Network & devices</small>
+    <a href="category.html?type=plumbing" class="fcat" style="top:20px;right:10px;animation-delay:0.5s;">
+      <div class="fcat-icon">🚰</div>
+      <div class="fcat-name">Plumbing</div>
+      <div class="fcat-sub">Taps · Leaks · Drains</div>
     </a>
-    <a href="category.html?type=maintenance" class="floating-card card-3">
-      <span class="icon">🔧</span>
-      <p>Maintenance</p>
-      <small>Repairs & cleaning</small>
+    <a href="category.html?type=water" class="fcat" style="top:195px;left:60px;animation-delay:1s;">
+      <div class="fcat-icon">💧</div>
+      <div class="fcat-name">Water Supply</div>
+      <div class="fcat-sub">Supply · Pressure</div>
+    </a>
+    <a href="category.html?type=network" class="fcat" style="top:195px;right:0;animation-delay:1.5s;">
+      <div class="fcat-icon">📡</div>
+      <div class="fcat-name">Network / IT</div>
+      <div class="fcat-sub">WiFi · Devices</div>
+    </a>
+    <a href="category.html?type=maintenance" class="fcat" style="top:370px;left:10px;animation-delay:2s;">
+      <div class="fcat-icon">🔧</div>
+      <div class="fcat-name">Maintenance</div>
+      <div class="fcat-sub">Repairs · Cleaning</div>
+    </a>
+    <a href="category.html?type=other" class="fcat" style="top:370px;right:20px;animation-delay:2.5s;">
+      <div class="fcat-icon">📋</div>
+      <div class="fcat-name">Other</div>
+      <div class="fcat-sub">Admin · General</div>
     </a>
   </div>
 </section>
 
-<section class="features">
-  <div class="section-header">
-    <div class="section-tag">How it works</div>
-    <h2 class="section-title">From report to resolved in 4 steps</h2>
-    <p class="section-sub">No more chasing authorities or waiting in queues</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-num">1</div>
-      <h3>Submit your issue</h3>
-      <p>Describe the problem, pick a category and location. Takes under a minute.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-num">2</div>
-      <h3>Auto-routed instantly</h3>
-      <p>The system detects the right department and assigns it automatically.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-num">3</div>
-      <h3>Authority notified</h3>
-      <p>The department head gets an email alert with full details immediately.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-num">4</div>
-      <h3>Track and get resolved</h3>
-      <p>Monitor status from your dashboard. Get notified when it's done.</p>
-    </div>
-  </div>
-</section>
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">From report to resolved</h2>
+    <p class="section-sub">No more chasing departments or filing paper complaints</p>
 
-<section class="categories">
-  <div class="section-header">
-    <div class="section-tag">Categories</div>
-    <h2 class="section-title">What can you report?</h2>
-    <p class="section-sub">Every issue goes to the right team</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Submit your issue</h3>
+        <p>Pick a category, describe the problem, add your location. Done in under a minute.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Auto-routed instantly</h3>
+        <p>The system detects the right department and assigns it automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Authority notified</h3>
+        <p>Department head gets an email alert with full complaint details right away.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Track till resolved</h3>
+        <p>Monitor your complaint status live. Get notified when it's marked resolved.</p>
+      </div>
+    </div>
   </div>
-  <div class="categories-grid">
-    <a href="category.html?type=plumbing" class="cat-card"><span class="cat-icon">🚰</span><div class="cat-name">Plumbing</div></a>
-    <a href="category.html?type=electrical" class="cat-card"><span class="cat-icon">⚡</span><div class="cat-name">Electrical</div></a>
-    <a href="category.html?type=water" class="cat-card"><span class="cat-icon">💧</span><div class="cat-name">Water Supply</div></a>
-    <a href="category.html?type=network" class="cat-card"><span class="cat-icon">📡</span><div class="cat-name">Network / IT</div></a>
-    <a href="category.html?type=maintenance" class="cat-card"><span class="cat-icon">🔧</span><div class="cat-name">Maintenance</div></a>
-    <a href="category.html?type=other" class="cat-card"><span class="cat-icon">📋</span><div class="cat-name">Other</div></a>
-  </div>
-</section>
-
-<section class="cta-section">
-  <h2>Ready to report an issue?</h2>
-  <p>Login and submit your complaint in under a minute</p>
-  <a href="login.html" class="btn-cta">Get Started</a>
 </section>
 
 <footer>
-  <p>© 2025 CampusCare · MLRIT · Built to make campus life better</p>
+  <p>© 2025 <span>CampusCare</span> · Built for MLRIT · Making campus life better, one issue at a time</p>
 </footer>
 
-<script src="landing.js"></script>
+<script>
+  function getToken() { return localStorage.getItem('cc_token'); }
+  function getUser()  { return JSON.parse(localStorage.getItem('cc_user') || 'null'); }
+  function logout()   { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); window.location.href = 'login.html'; }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = getUser();
+    const nav = document.getElementById('navLinks');
+
+    if (user) {
+      const s = document.createElement('span');
+      s.style.cssText = 'color:#0ea5e9;font-weight:600;font-size:13px;';
+      s.textContent = `Hi, ${user.name.split(' ')[0]}`;
+
+      const l = document.createElement('a');
+      l.href = '#'; l.textContent = 'Logout';
+      l.style.cssText = 'color:#ef4444;font-weight:600;font-size:14px;padding:7px 14px;border-radius:8px;text-decoration:none;';
+      l.onclick = logout;
+
+      if (nav) { nav.appendChild(s); nav.appendChild(l); }
+
+      // Change hero button based on role
+      const heroBtn = document.querySelector('.btn-main');
+      if (heroBtn) {
+        if (user.role === 'admin') {
+          heroBtn.textContent = 'Go to Dashboard';
+          heroBtn.href = 'dashboard.html';
+        } else {
+          heroBtn.textContent = 'Report an Issue';
+          heroBtn.href = 'index.html';
+        }
+      }
+    } else {
+      if (nav) {
+        const b = document.createElement('a');
+        b.href = 'login.html'; b.className = 'nav-cta'; b.textContent = 'Login';
+        const r = nav.querySelector('.nav-cta');
+        if (r) r.replaceWith(b);
+      }
+    }
+  });
+</script>
 </body>
 </html>

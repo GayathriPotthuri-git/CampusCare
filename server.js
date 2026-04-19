@@ -7,6 +7,32 @@ const crypto = require('crypto');
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
+const admin = require('firebase-admin');
+
+// ─── Firebase Admin setup ─────────────────────────────────────────────────────
+try {
+  const serviceAccount = require('./firebase-service-account.json');
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  console.log('Firebase Admin initialized');
+} catch (err) {
+  console.error('Firebase Admin init failed:', err.message);
+}
+
+async function sendPushNotification(tokens, title, body) {
+  if (!tokens || tokens.length === 0) return;
+  try {
+    const message = {
+      notification: { title, body },
+      tokens: tokens
+    };
+    const res = await admin.messaging().sendEachForMulticast(message);
+    console.log(`Push sent: ${res.successCount} success, ${res.failureCount} failed`);
+  } catch (err) {
+    console.error('Push notification failed:', err.message);
+  }
+}
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -443,6 +469,11 @@ app.post('/api/complaints', requireAuth, (req, res) => {
   `;
   sendEmail(authority.email, emailSubject, emailBody);
 
+  // Send push notification to admin/authority
+  const tokens = readJSON(tokensFile);
+  const adminTokens = tokens.filter(t => t.role === 'admin').map(t => t.fcmToken);
+  sendPushNotification(adminTokens, 'New Complaint Assigned', `${category.toUpperCase()} issue at ${location} — ${req.user.name}`);
+
   res.status(201).json({ success: true, complaint, message: 'Complaint submitted successfully!' });
 });
 
@@ -515,9 +546,29 @@ app.get('/api/stats', requireAuth, (req, res) => {
   res.json(stats);
 });
 
+// ─── PUSH NOTIFICATION ROUTES ────────────────────────────────────────────────
+
+// Register FCM token for logged-in user
+app.post('/api/push/register', requireAuth, (req, res) => {
+  const { fcmToken } = req.body;
+  if (!fcmToken) return res.status(400).json({ success: false, message: 'FCM token required.' });
+
+  const tokens = readJSON(tokensFile);
+  const existing = tokens.find(t => t.userId === req.user.id);
+  if (existing) {
+    existing.fcmToken = fcmToken;
+    existing.updatedAt = new Date().toISOString();
+  } else {
+    tokens.push({ userId: req.user.id, email: req.user.email, role: req.user.role, fcmToken, createdAt: new Date().toISOString() });
+  }
+  writeJSON(tokensFile, tokens);
+  res.json({ success: true, message: 'Push token registered.' });
+});
+
 // ─── ANNOUNCEMENTS ROUTES ─────────────────────────────────────────────────────
 
 const announcementsFile = path.join(__dirname, 'announcements.json');
+const tokensFile = path.join(__dirname, 'fcm-tokens.json');
 
 // Get all announcements — public, no auth needed
 app.get('/api/announcements', (req, res) => {
@@ -554,6 +605,11 @@ app.post('/api/announcements', requireAuth, requireAdmin, (req, res) => {
   }
 
   console.log(`\n ANNOUNCEMENT POSTED: "${title}" [${announcementTag}] by ${req.user.name}`);
+
+  // Send push to all users
+  const tokens = readJSON(tokensFile);
+  const allTokens = tokens.map(t => t.fcmToken).filter(Boolean);
+  sendPushNotification(allTokens, `📢 ${announcementTag}: ${title}`, announcement.body.substring(0, 100));
   res.status(201).json({ success: true, announcement });
 });
 
