@@ -644,6 +644,55 @@ app.get('/api/firebase-config', (req, res) => {
   });
 });
 
+// ─── CHATBOT ROUTE ───────────────────────────────────────────────────────────
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
+  if (!message) return res.status(400).json({ success: false, message: 'Message required.' });
+
+  try {
+    // Get latest announcements and authorities for context
+    const announcements = readJSON(announcementsFile).slice(-5).reverse();
+    const annText = announcements.length
+      ? announcements.map(a => `- [${a.tag}] ${a.title}: ${a.body.substring(0, 100)}`).join('\n')
+      : 'No announcements yet.';
+
+    const authText = Object.values(authorities).map(a =>
+      `${a.name}: ${a.head} | ${a.email} | ${a.contact} | ${a.availability}`
+    ).join('\n');
+
+    const systemPrompt = `You are CampusCare Assistant for MLRIT campus. Help with complaints, announcements and contacts. Categories: plumbing, electrical, water, network, maintenance, other. To file complaint go to Report Issue page. Announcements: ${annText.substring(0,200)}. Be brief and friendly.`;
+
+    console.log('GEMINI KEY:', process.env.GEMINI_API_KEY ? 'loaded' : 'MISSING');
+    const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
+    const modelsData = await modelsRes.json();
+    const modelNames = modelsData.models?.map(m => m.name) || [];
+    console.log('Available models:', modelNames.slice(0,5).join(', '));
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${process.env.GEMINI_API_KEY}`;
+    const response = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          role: 'user',
+          parts: [{ text: systemPrompt + '\n\nUser question: ' + message }]
+        }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
+      })
+    });
+    const data = await response.json();
+    console.log('Gemini response:', JSON.stringify(data).substring(0, 300));
+    if (data.error) {
+      console.error('Gemini error:', data.error.message);
+      return res.json({ success: true, reply: 'AI error: ' + data.error.message });
+    }
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not process that.';
+    res.json({ success: true, reply });
+  } catch (err) {
+    console.error('Chatbot error:', err.message);
+    res.status(500).json({ success: false, reply: 'Sorry, something went wrong. Please try again.' });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.method} ${req.path} not found.` });
