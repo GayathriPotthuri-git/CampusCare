@@ -70,6 +70,8 @@ app.use(express.static('public'));
 
 const usersFile = path.join(__dirname, 'users.json');
 const complaintsFile = path.join(__dirname, 'complaints.json');
+const announcementsFile = path.join(__dirname, 'announcements.json');
+const fcmTokensFile = path.join(__dirname, 'fcm-tokens.json');
 
 function readJSON(file) {
   try {
@@ -101,28 +103,38 @@ function hashPassword(password) {
 }
 
 // ─── Simple token system ─────────────────────────────────────────────────────
-// Stores active tokens in memory. Tokens expire after 24 hours.
+// Stores active tokens in a file so they survive server restarts.
 
-const activeTokens = {};
+const authTokensFile = path.join(__dirname, 'auth-tokens.json');
+
+function getActiveTokens() {
+  const data = readJSON(authTokensFile);
+  return Array.isArray(data) ? {} : (data || {});
+}
+
+function saveActiveTokens(tokens) {
+  writeJSON(authTokensFile, tokens);
+}
 
 function generateToken(userId) {
   const token = crypto.randomBytes(32).toString('hex');
-  activeTokens[token] = {
-    userId,
-    createdAt: Date.now()
-  };
+  const tokens = getActiveTokens();
+  tokens[token] = { userId, createdAt: Date.now() };
+  saveActiveTokens(tokens);
   return token;
 }
 
 function getUserFromToken(token) {
   if (!token) return null;
-  const entry = activeTokens[token];
+  const tokens = getActiveTokens();
+  const entry = tokens[token];
   if (!entry) return null;
 
   // Expire after 24 hours
   const twentyFourHours = 24 * 60 * 60 * 1000;
   if (Date.now() - entry.createdAt > twentyFourHours) {
-    delete activeTokens[token];
+    delete tokens[token];
+    saveActiveTokens(tokens);
     return null;
   }
 
@@ -388,7 +400,9 @@ app.post('/api/auth/login', (req, res) => {
 // Logout
 app.post('/api/auth/logout', requireAuth, (req, res) => {
   const token = req.headers['authorization']?.replace('Bearer ', '');
-  delete activeTokens[token];
+  const tokens = getActiveTokens();
+  delete tokens[token];
+  saveActiveTokens(tokens);
   res.json({ success: true, message: 'Logged out.' });
 });
 
@@ -470,8 +484,8 @@ app.post('/api/complaints', requireAuth, (req, res) => {
   sendEmail(authority.email, emailSubject, emailBody);
 
   // Send push notification to admin/authority
-  const tokens = readJSON(tokensFile);
-  const adminTokens = tokens.filter(t => t.role === 'admin').map(t => t.fcmToken);
+  const fcmTokens = readJSON(fcmTokensFile);
+  const adminTokens = fcmTokens.filter(t => t.role === 'admin').map(t => t.fcmToken);
   sendPushNotification(adminTokens, 'New Complaint Assigned', `${category.toUpperCase()} issue at ${location} — ${req.user.name}`);
 
   res.status(201).json({ success: true, complaint, message: 'Complaint submitted successfully!' });
@@ -553,7 +567,7 @@ app.post('/api/push/register', requireAuth, (req, res) => {
   const { fcmToken } = req.body;
   if (!fcmToken) return res.status(400).json({ success: false, message: 'FCM token required.' });
 
-  const tokens = readJSON(tokensFile);
+  const tokens = readJSON(fcmTokensFile);
   const existing = tokens.find(t => t.userId === req.user.id);
   if (existing) {
     existing.fcmToken = fcmToken;
@@ -561,14 +575,12 @@ app.post('/api/push/register', requireAuth, (req, res) => {
   } else {
     tokens.push({ userId: req.user.id, email: req.user.email, role: req.user.role, fcmToken, createdAt: new Date().toISOString() });
   }
-  writeJSON(tokensFile, tokens);
+  writeJSON(fcmTokensFile, tokens);
   res.json({ success: true, message: 'Push token registered.' });
 });
 
 // ─── ANNOUNCEMENTS ROUTES ─────────────────────────────────────────────────────
 
-const announcementsFile = path.join(__dirname, 'announcements.json');
-const tokensFile = path.join(__dirname, 'fcm-tokens.json');
 
 // Get all announcements — public, no auth needed
 app.get('/api/announcements', (req, res) => {
@@ -607,8 +619,8 @@ app.post('/api/announcements', requireAuth, requireAdmin, (req, res) => {
   console.log(`\n ANNOUNCEMENT POSTED: "${title}" [${announcementTag}] by ${req.user.name}`);
 
   // Send push to all users
-  const tokens = readJSON(tokensFile);
-  const allTokens = tokens.map(t => t.fcmToken).filter(Boolean);
+  const fcmTokens = readJSON(fcmTokensFile);
+  const allTokens = fcmTokens.map(t => t.fcmToken).filter(Boolean);
   sendPushNotification(allTokens, `📢 ${announcementTag}: ${title}`, announcement.body.substring(0, 100));
   res.status(201).json({ success: true, announcement });
 });
