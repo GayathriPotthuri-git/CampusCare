@@ -1,6 +1,6 @@
 async function loadAuthorities() {
     try {
-        const response = await fetch('http://localhost:3000/api/authorities');
+        const response = await fetch('/api/authorities');
         const authorities = await response.json();
         
         const container = document.getElementById('authoritiesContainer');

@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function loadComplaints() {
   try {
-    const res = await fetch('http://localhost:3000/api/complaints', {
+    const res = await fetch('/api/complaints', {
       headers: { 'Authorization': 'Bearer ' + getToken() }
     });
 
@@ -91,7 +91,7 @@ async function loadComplaints() {
 
 async function updateStatus(id, status) {
   try {
-    const res = await fetch(`http://localhost:3000/api/complaints/${id}`, {
+    const res = await fetch(`/api/complaints/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
       body: JSON.stringify({ status })

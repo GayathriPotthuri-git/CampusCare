@@ -58,7 +58,7 @@ form.addEventListener('submit', async (e) => {
   btn.disabled = true; btn.textContent = 'Submitting...';
 
   try {
-    const res = await fetch('http://localhost:3000/api/complaints', {
+    const res = await fetch('/api/complaints', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
       body: JSON.stringify(formData)

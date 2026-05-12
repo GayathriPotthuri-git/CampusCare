@@ -106,7 +106,7 @@
     const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
     if (!token || !user) return;
     try {
-      const res = await fetch('http://localhost:3000/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+      const res = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
       if (res.ok) { window.location.href = user.role === 'admin' ? 'dashboard.html' : 'index.html'; }
       else { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); }
     } catch { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); }
@@ -131,7 +131,7 @@
     if (!email || !password) return showAlert('login','Please enter email and password.','error');
     btn.disabled = true; btn.textContent = 'Logging in...';
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
+      const res = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
       const data = await res.json();
       if (data.success) {
         localStorage.setItem('cc_token', data.token);
@@ -150,7 +150,7 @@
     if (!name||!email||!password) return showAlert('signup','Please fill in all fields.','error');
     btn.disabled=true; btn.textContent='Creating account...';
     try {
-      const res = await fetch('http://localhost:3000/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
+      const res = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
       const data = await res.json();
       if (data.success) {
         localStorage.setItem('cc_token', data.token);

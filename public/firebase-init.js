@@ -4,7 +4,7 @@
 async function initFirebasePush() {
   try {
     // Fetch config from server
-    const configRes = await fetch('http://localhost:3000/api/firebase-config');
+    const configRes = await fetch('/api/firebase-config');
     const config = await configRes.json();
 
     if (!config.apiKey) { console.log('Firebase config not available'); return; }
@@ -26,7 +26,7 @@ async function initFirebasePush() {
 
     const authToken = localStorage.getItem('cc_token');
     if (authToken) {
-      const res = await fetch('http://localhost:3000/api/push/register', {
+      const res = await fetch('/api/push/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

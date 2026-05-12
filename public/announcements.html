@@ -127,7 +127,7 @@
 
   async function loadAnnouncements() {
     try {
-      const res = await fetch('http://localhost:3000/api/announcements');
+      const res = await fetch('/api/announcements');
       allAnn = await res.json();
       render();
     } catch { document.getElementById('annList').innerHTML = '<p class="empty-state">Could not load. Is the server running?</p>'; }
@@ -166,7 +166,7 @@
     const alert = document.getElementById('postAlert');
     if (!title||!body) { alert.textContent='Please fill title and body.'; alert.className='post-alert error'; return; }
     try {
-      const res = await fetch('http://localhost:3000/api/announcements', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}, body:JSON.stringify({title,body,tag}) });
+      const res = await fetch('/api/announcements', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}, body:JSON.stringify({title,body,tag}) });
       const data = await res.json();
       if (data.success) {
         alert.textContent='Posted!'; alert.className='post-alert success';
@@ -179,7 +179,7 @@
   async function deleteAnn(id) {
     if (!confirm('Delete this announcement?')) return;
     try {
-      const res = await fetch(`http://localhost:3000/api/announcements/${id}`, { method:'DELETE', headers:{'Authorization':'Bearer '+getToken()} });
+      const res = await fetch(`/api/announcements/${id}`, { method:'DELETE', headers:{'Authorization':'Bearer '+getToken()} });
       if (res.ok) loadAnnouncements();
     } catch(e) { console.error(e); }
   }

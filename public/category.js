@@ -64,7 +64,7 @@ async function loadCategoryPage() {
 
     // Authority info — no auth needed
     try {
-        const res = await fetch('http://localhost:3000/api/authorities');
+        const res = await fetch('/api/authorities');
         const authorities = await res.json();
         const authority = authorities[categoryType];
         if (authority) {
@@ -96,7 +96,7 @@ async function loadCategoryPage() {
     }
 
     try {
-        const res = await fetch('http://localhost:3000/api/complaints', {
+        const res = await fetch('/api/complaints', {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const complaints = await res.json();
