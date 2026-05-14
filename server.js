@@ -519,7 +519,7 @@ app.post('/api/complaints', requireAuth, (req, res) => {
       <tr><td style="padding:8px;font-weight:bold">Reporter</td><td style="padding:8px">${req.user.name} (${req.user.email})</td></tr>
       <tr><td style="padding:8px;font-weight:bold">Submitted</td><td style="padding:8px">${new Date().toLocaleString()}</td></tr>
     </table>
-    <p>Please login to the <a href="http://localhost:3000/dashboard.html">dashboard</a> to respond.</p>
+    <p>Please login to the <a href="https://campuscare-33wv.onrender.com/dashboard.html">dashboard</a> to respond.</p>
     <p style="color:#999;font-size:12px">CampusCare - Campus Issue Reporting System</p>
   `;
   sendEmail(authority.email, emailSubject, emailBody);
