@@ -273,7 +273,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback'
+  callbackURL: process.env.RENDER_EXTERNAL_URL ? `${process.env.RENDER_EXTERNAL_URL}/auth/google/callback` : 'http://localhost:3000/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
   const users = readJSON(usersFile);
   let user = users.find(u => u.googleId === profile.id || u.email === profile.emails[0].value);
