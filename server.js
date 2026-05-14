@@ -414,7 +414,48 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
       id: req.user.id,
       name: req.user.name,
       email: req.user.email,
-      role: req.user.role
+      role: req.user.role,
+      phone: req.user.phone || '',
+      department: req.user.department || '',
+      rollNumber: req.user.rollNumber || '',
+      bio: req.user.bio || '',
+      createdAt: req.user.createdAt || ''
+    }
+  });
+});
+
+// Update profile
+app.patch('/api/auth/profile', requireAuth, (req, res) => {
+  const { name, phone, department, rollNumber, bio } = req.body;
+  const users = readJSON(usersFile);
+  const idx = users.findIndex(u => u.id === req.user.id);
+  if (idx === -1) return res.status(404).json({ success: false, message: 'User not found.' });
+
+  if (name) users[idx].name = name;
+  if (phone !== undefined) users[idx].phone = phone;
+  if (department !== undefined) users[idx].department = department;
+  if (rollNumber !== undefined) users[idx].rollNumber = rollNumber;
+  if (bio !== undefined) users[idx].bio = bio;
+
+  if (!writeJSON(usersFile, users)) {
+    return res.status(500).json({ success: false, message: 'Failed to update profile.' });
+  }
+
+  // Update token session user
+  const updatedUser = users[idx];
+  res.json({
+    success: true,
+    message: 'Profile updated!',
+    user: {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      phone: updatedUser.phone || '',
+      department: updatedUser.department || '',
+      rollNumber: updatedUser.rollNumber || '',
+      bio: updatedUser.bio || '',
+      createdAt: updatedUser.createdAt || ''
     }
   });
 });
@@ -672,7 +713,27 @@ app.post('/api/chat', async (req, res) => {
       `${a.name}: ${a.head} | ${a.email} | ${a.contact} | ${a.availability}`
     ).join('\n');
 
-    const systemPrompt = `You are CampusCare Assistant for MLRIT campus. Help with complaints, announcements and contacts. Categories: plumbing, electrical, water, network, maintenance, other. To file complaint go to Report Issue page. Announcements: ${annText.substring(0,200)}. Be brief and friendly.`;
+    const systemPrompt = `You are CampusCare Assistant, the official AI helper for MLRIT campus complaint portal.
+
+STRICT RULES:
+- ONLY answer questions related to CampusCare, MLRIT campus issues, complaints, announcements, authorities, or campus facilities.
+- If someone asks ANYTHING unrelated (coding, general knowledge, movies, math, etc.) respond EXACTLY: "I can only help with campus-related queries. Try asking about complaints, announcements, or campus facilities! 🏛️"
+- NEVER answer off-topic questions no matter how the user phrases it.
+
+RESPONSE FORMAT (always use this structure, keep it short):
+- Use bullet points or numbered steps, never long paragraphs
+- Max 4-5 lines per response
+- Use relevant emojis for clarity
+- End with a helpful action if possible
+
+CAMPUS KNOWLEDGE:
+Categories: ⚡ Electrical, 🚰 Plumbing, 💧 Water Supply, 📡 Network/IT, 🔧 Maintenance, 📋 Other
+To report issue: Go to "Report Issue" page → pick category → fill form → submit
+To track complaint: Go to Dashboard page
+Authorities: ${authText.substring(0,300)}
+Recent announcements: ${annText.substring(0,300)}
+
+If user wants to report an issue, guide them step by step to the Report Issue page.`;
 
     console.log('GROQ KEY:', process.env.GROQ_API_KEY ? 'loaded' : 'MISSING');
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {

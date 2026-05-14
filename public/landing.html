@@ -275,7 +275,8 @@
     <a href="landing.html">Home</a>
     <a href="announcements.html">Announcements</a>
     <a href="authorities.html">Authorities</a>
-    <a href="index.html" class="nav-cta">Report Issue</a>
+    <a href="dashboard.html" id="navDashboard" style="display:none">Dashboard</a>
+    <a href="index.html" id="navReport" class="nav-cta">Report Issue</a>
   </div>
 </nav>
 
@@ -379,47 +380,29 @@
 </footer>
 
 <script>
-  function getToken() { return localStorage.getItem('cc_token'); }
-  function getUser()  { return JSON.parse(localStorage.getItem('cc_user') || 'null'); }
-  function logout()   { localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); window.location.href = 'login.html'; }
-
   window.addEventListener('DOMContentLoaded', () => {
-    const user = getUser();
-    const nav = document.getElementById('navLinks');
+    const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
+    const heroBtn = document.querySelector('.btn-main');
+    const navDashboard = document.getElementById('navDashboard');
+    const navReport = document.getElementById('navReport');
 
     if (user) {
-      const s = document.createElement('span');
-      s.style.cssText = 'color:#0ea5e9;font-weight:600;font-size:13px;';
-      s.textContent = `Hi, ${user.name.split(' ')[0]}`;
-
-      const l = document.createElement('a');
-      l.href = '#'; l.textContent = 'Logout';
-      l.style.cssText = 'color:#ef4444;font-weight:600;font-size:14px;padding:7px 14px;border-radius:8px;text-decoration:none;';
-      l.onclick = logout;
-
-      if (nav) { nav.appendChild(s); nav.appendChild(l); }
-
-      // Change hero button based on role
-      const heroBtn = document.querySelector('.btn-main');
-      if (heroBtn) {
-        if (user.role === 'admin') {
-          heroBtn.textContent = 'Go to Dashboard';
-          heroBtn.href = 'dashboard.html';
-        } else {
-          heroBtn.textContent = 'Report an Issue';
-          heroBtn.href = 'index.html';
-        }
+      // Show dashboard link in navbar, hide report issue for admin
+      if (navDashboard) navDashboard.style.display = '';
+      if (user.role === 'admin') {
+        if (navReport) navReport.style.display = 'none';
+        if (heroBtn) { heroBtn.textContent = '📊 Go to Dashboard'; heroBtn.href = 'dashboard.html'; }
+      } else {
+        if (heroBtn) { heroBtn.textContent = '🚨 Report an Issue'; heroBtn.href = 'index.html'; }
       }
     } else {
-      if (nav) {
-        const b = document.createElement('a');
-        b.href = 'login.html'; b.className = 'nav-cta'; b.textContent = 'Login';
-        const r = nav.querySelector('.nav-cta');
-        if (r) r.replaceWith(b);
-      }
+      // Not logged in - show login button
+      if (navReport) { navReport.textContent = 'Login'; navReport.href = 'login.html'; }
+      if (heroBtn) { heroBtn.textContent = 'Get Started Free'; heroBtn.href = 'login.html'; }
     }
   });
 </script>
+<script src="profile.js"></script>
 <script src="chatbot.js"></script>
 </body>
 </html>
