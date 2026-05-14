@@ -1,0 +1,26 @@
+[
+  {
+    "userId": 1776496998164,
+    "email": "24r21a05kz@mlrit.ac.in",
+    "role": "student",
+    "fcmToken": "fmfoXIQ1uIaQ9Ly-iT4BFG:APA91bHAm-KG_WHgskemXKnqP67sJeDEBd15DdhBwKZdNGitYzv5eN1K47FKT3236eFzIkcNicBmhZxHfG-1OATV5SYBjiWkKSEk27mQtU6xdfvIzREBw3I",
+    "createdAt": "2026-04-19T13:14:15.274Z",
+    "updatedAt": "2026-05-14T06:12:32.267Z"
+  },
+  {
+    "userId": 1776346075487,
+    "email": "24r21a05kz@clg.in",
+    "role": "student",
+    "fcmToken": "fmfoXIQ1uIaQ9Ly-iT4BFG:APA91bHAm-KG_WHgskemXKnqP67sJeDEBd15DdhBwKZdNGitYzv5eN1K47FKT3236eFzIkcNicBmhZxHfG-1OATV5SYBjiWkKSEk27mQtU6xdfvIzREBw3I",
+    "createdAt": "2026-04-19T14:17:01.577Z",
+    "updatedAt": "2026-04-20T13:44:23.699Z"
+  },
+  {
+    "userId": 1775020975986,
+    "email": "admin@college.edu",
+    "role": "admin",
+    "fcmToken": "fmfoXIQ1uIaQ9Ly-iT4BFG:APA91bHAm-KG_WHgskemXKnqP67sJeDEBd15DdhBwKZdNGitYzv5eN1K47FKT3236eFzIkcNicBmhZxHfG-1OATV5SYBjiWkKSEk27mQtU6xdfvIzREBw3I",
+    "createdAt": "2026-04-19T14:21:24.120Z",
+    "updatedAt": "2026-05-14T06:11:46.308Z"
+  }
+]
